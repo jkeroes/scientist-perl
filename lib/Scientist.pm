@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "0.0.4.001";
 
 
 
@@ -14,22 +14,29 @@ __END__
 
 =head1 NAME
 
-Scientist - It's new $module
+Scientist - carefully refactor critical paths
 
 =head1 SYNOPSIS
 
     use Scientist;
 
+    my $experiment = Scientist::Default->new('thing-study');
+
+    $experiment->use( sub { do_old_thing() } );
+    $experiment->try( sub { do_new_thing() } );
+    $experiment->run;
+
 =head1 DESCRIPTION
 
-Scientist is ...
+=head2 How do I science?
+
+...
 
 =head1 LICENSE
 
 Copyright (C) Joshua Keroes.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+See LICENSE file.
 
 =head1 AUTHOR
 
