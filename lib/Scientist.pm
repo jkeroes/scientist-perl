@@ -5,6 +5,10 @@ use warnings;
 
 our $VERSION = "0.0.4.001";
 
+use Moo;
+use strictures 2;
+use namespace::autoclean;
+
 use Carp;
 use Scientist::Default;
 use Scientist::Errors;
@@ -12,7 +16,7 @@ use Scientist::Experiment;
 use Scientist::Observation;
 use Scientist::Result;
 
-=for ruby
+=begin ruby
 
   # Define and run a science experiment.
   #
@@ -35,6 +39,8 @@ use Scientist::Result;
     experiment.run(test)
   end
 
+=end ruby
+
 =cut
 
 sub science {
@@ -49,7 +55,7 @@ sub science {
 	$experiment->run($test);
 }
 
-=for ruby
+=begin ruby
 
   # Public: the default context data for an experiment created and run via the
   # `science` helper method. Override this in any class that includes Scientist
@@ -59,6 +65,8 @@ sub science {
   def default_scientist_context
     {}
   end
+
+=end ruby
 
 =cut
 
