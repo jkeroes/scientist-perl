@@ -1,12 +1,12 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "carefully refactor critical paths",
    "author" : [
       "Joshua Keroes <joshua.keroes@dreamhost.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v2.5.0, CPAN::Meta::Converter version 2.150005",
    "license" : [
-      "perl_5"
+      "unknown"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -47,11 +47,26 @@
       },
       "test" : {
          "requires" : {
+            "Moo" : "2.0",
             "Test::More" : "0.98"
          }
       }
    },
    "release_status" : "unstable",
-   "version" : "0.01",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/jkeroes/scientist-perl/issues"
+      },
+      "homepage" : "https://github.com/jkeroes/scientist-perl",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/jkeroes/scientist-perl.git",
+         "web" : "https://github.com/jkeroes/scientist-perl"
+      }
+   },
+   "version" : "0.0.4.001",
+   "x_contributors" : [
+      "Joshua <joshua@keroes.com>"
+   ],
    "x_serialization_backend" : "JSON::PP version 2.27202"
 }
