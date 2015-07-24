@@ -48,7 +48,9 @@
       "test" : {
          "requires" : {
             "Moo" : "2.0",
-            "Test::More" : "0.98"
+            "Test::More" : "0.98",
+            "namespace::autoclean" : "0",
+            "strictures" : "2"
          }
       }
    },
