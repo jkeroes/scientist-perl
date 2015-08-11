@@ -241,6 +241,6 @@ sub evaluate_candidates {
 	$self->mismatched(@mismatched);
 }
 
-no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
