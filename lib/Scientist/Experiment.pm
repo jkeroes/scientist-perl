@@ -25,10 +25,16 @@ module Scientist::Experiment
 
 =cut
 
+# requires Perl hash-style args
+
 sub BUILD {
-	my ($self, @args) = @_;
-	return Scientist::Default->new(@args); # TODO: Does this pass name => $name through?
+	my $self = shift;
+	return Scientist::Default->new(@_);
 };
+
+# sub BUILDARGS {
+#
+# }
 
 =begin ruby
 
