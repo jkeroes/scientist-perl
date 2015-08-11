@@ -29,7 +29,10 @@ use Scientist::Experiment;
 
 =cut
 
-has name => (is => 'ro');
+has name => (
+    is  => 'ro',
+    isa => 'Str',
+);
 
 =begin ruby
 
@@ -42,7 +45,11 @@ has name => (is => 'ro');
 
 =cut
 
-has is_enabled => (is => 'ro', default => 1);
+has is_enabled => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1,
+);
 
 =begin ruby
 
