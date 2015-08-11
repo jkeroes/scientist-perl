@@ -5,8 +5,7 @@ use warnings;
 
 our $VERSION = "0.0.4.001";
 
-use Moo;
-use strictures 2;
+use Moose;
 use namespace::autoclean;
 
 use Carp;
@@ -70,11 +69,10 @@ sub science {
 
 =cut
 
-sub default_scientist_context {
-	return {};
-}
+no Moose;
 
 1;
+
 __END__
 
 =encoding utf-8

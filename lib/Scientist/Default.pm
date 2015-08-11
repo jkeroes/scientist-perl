@@ -12,8 +12,7 @@ class Scientist::Default
 
 =cut
 
-use Moo;
-use strictures 2;
+use Moose;
 use namespace::autoclean;
 
 use Scientist::Experiment;
@@ -60,4 +59,7 @@ sub publish {
 	return;
 }
 
+no Moose;
+
 1;
+
