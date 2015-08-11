@@ -1,6 +1,7 @@
 package Scientist::Experiment;
 
 use Moose;
+use Carp;
 use namespace::autoclean;
 
 =begin ruby
@@ -49,6 +50,16 @@ sub BUILD {
       @result = result
       super "experiment '#{name}' observations mismatched"
     end
+
+=end ruby
+
+=cut
+
+# implemented with confess/die eg
+
+# die "experiment $name observations mismatched (MismatchError)";
+
+=begin ruby
 
     # The default formatting is nearly unreadable, so make it useful.
     #

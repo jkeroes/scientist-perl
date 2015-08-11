@@ -1,5 +1,7 @@
 package Scientist;
 
+use Carp;
+
 =begin ruby
 
 module Scientist
@@ -44,5 +46,12 @@ end
 =end
 
 =cut
+
+# These are all implemented with confess/die eg
+
+# confess "$message (BadBehavior)";
+# confess "$experiment->name missing $name behavior (BehaviorMissing)";
+# confess "$experiment->name already has $name behavior (BehaviorNotUnique)";
+# confess "$observation->name didn't return a value (NoValue)";
 
 1;
