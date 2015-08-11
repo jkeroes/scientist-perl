@@ -47,8 +47,7 @@ sub science {
 	croak '$opts must be a hashref' if $opts && ref $opts ne 'HASH';
 
 	my $experiment = Scientist::Experiment->new($name);
-	my $ctx = default_scientist_context();
-	$experiment->context($ctx);
+	$experiment->context($self->default_scientist_context);
 
 	my $test = $opts->{run} if $opts;
 	$experiment->run($test);
@@ -68,6 +67,11 @@ sub science {
 =end ruby
 
 =cut
+
+has default_scientist_context => (
+	is      => 'ro',
+	default => {},
+);
 
 no Moose;
 
