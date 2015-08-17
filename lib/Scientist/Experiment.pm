@@ -3,6 +3,7 @@ package Scientist::Experiment;
 use Moose;
 use Carp;
 use namespace::autoclean;
+use Try::Tiny;
 
 =begin ruby
 
@@ -41,14 +42,6 @@ sub BUILD {
   # A mismatch, raised when raise_on_mismatches is enabled.
   class MismatchError < StandardError
 
-=end ruby
-
-=cut
-
-# TODO
-
-=begin ruby
-
     attr_reader :name, :result
 
     def initialize(name, result)
@@ -78,6 +71,25 @@ sub BUILD {
       "\n"
     end
 
+=end ruby
+
+=cut
+
+# TODO: figure out what to do with the stringification of super.
+
+	# sub to_s {
+	# 	my $self = shift;
+	# 	my $result = $self->result;
+
+	# 	return
+	# 		$self->... . ":\n" .
+	# 		$self->format_observation($result->control) . "\n" .
+	# 		join("\n", map { $_->format_observation } $result->candidates) .
+	# 		"\n";
+	# }
+
+=begin ruby
+
     def format_observation(observation)
       observation.name + ":\n" +
       if observation.raised?
@@ -88,6 +100,29 @@ sub BUILD {
       end
     end
   end
+
+=end ruby
+
+=cut
+
+sub format_observation {
+	my ($self, $observation) = @_;
+
+	my $string = $observation->name . ":\n";
+
+	try {
+		$string .= "  " . $observation->value;
+	}
+	catch {
+		s/^/    /mg;            # indent confession
+		# $string .= "  ...\n"; # prepend exception.inspect()
+		$string .= $_;          # return formatted confession
+	}
+
+	return $string;
+}
+
+=begin ruby
 
   module RaiseOnMismatch
     # Set this flag to raise on experiment mismatches.
@@ -107,9 +142,31 @@ sub BUILD {
     end
   end
 
+=end ruby
+
+=cut
+
+# package RaiseOnMismatch;
+
+has raise_on_mismatches => (
+	is        => 'ro',
+	isa       => 'Bool',
+	# default => 0;
+);
+
+=begin ruby
+
   def self.included(base)
     base.extend RaiseOnMismatch
   end
+
+=end ruby
+
+=cut
+
+# skip
+
+=begin ruby
 
   # Define a block of code to run before an experiment begins, if the experiment
   # is enabled.
@@ -121,11 +178,36 @@ sub BUILD {
     @_scientist_before_run = block
   end
 
+=end ruby
+
+=cut
+
+has before_run => (
+	traits => ['Code'],
+	is     => 'ro',
+	# skip _scientist_before_run
+);
+
+=begin ruby
+
   # A Hash of behavior blocks, keyed by String name. Register behavior blocks
   # with the `try` and `use` methods.
   def behaviors
     @_scientist_behaviors ||= {}
   end
+
+=end ruby
+
+=cut
+
+has _scientist_behaviors => (
+	traits  => ['Hash'],
+	is      => 'ro',
+	isa     => 'HashRef[CodeRef]',
+	default => {},
+);
+
+=begin ruby
 
   # A block to clean an observed value for publishing or storing.
   #
@@ -135,6 +217,19 @@ sub BUILD {
   def clean(&block)
     @_scientist_cleaner = block
   end
+
+=end ruby
+
+=cut
+
+has clean => (
+	traits    => ['Code'],
+	is        => 'ro',
+	predicate => 'has_clean',
+	# skip: "_scientist_cleaner"
+);
+
+=begin ruby
 
   # Internal: Clean a value with the configured clean block, or return the value
   # if no clean block is configured.
@@ -151,6 +246,29 @@ sub BUILD {
     value
   end
 
+=end ruby
+
+=cut
+
+sub clean_value {
+	my ($self, $value) = @_;
+
+	return $value unless $self->has_clean;
+
+	my ($cleaned_value, $error);
+	try {
+		$cleaned_value = $self->clean->execute($value);
+	}
+	catch {
+		# TODO: rescue
+	};
+
+	return $cleaned_value || $error;
+
+}
+
+=begin ruby
+
   # A block which compares two experimental values.
   #
   # The block must take two arguments, the control value and a candidate value,
@@ -161,12 +279,44 @@ sub BUILD {
     @_scientist_comparator = block
   end
 
+=end ruby
+
+=cut
+
+has compare => (
+	traits    => ['Code'],
+	is        => 'ro',
+	# predicate => 'has_clean',
+	# skip: "_scientist_comparator"
+);
+
+=begin ruby
+
   # A Symbol-keyed Hash of extra experiment data.
   def context(context = nil)
     @_scientist_context ||= {}
     @_scientist_context.merge!(context) if !context.nil?
     @_scientist_context
   end
+
+=end ruby
+
+=cut
+
+# XXX In progress:
+has context => (
+	traits => ['Hash'],
+	builder => '_build_context',
+);
+
+# XXX In progress:
+sub _build_context {
+	my ($self, $new_context) = @_;
+	$new_context ||= {};
+	$self->context->merge($new_context) if keys %$new_context;
+}
+
+=begin ruby
 
   # Configure this experiment to ignore an observation with the given block.
   #
@@ -179,6 +329,14 @@ sub BUILD {
     @_scientist_ignores ||= []
     @_scientist_ignores << block
   end
+
+=end ruby
+
+=cut
+
+# TODO
+
+=begin ruby
 
   # Internal: ignore a mismatched observation?
   #
@@ -197,6 +355,14 @@ sub BUILD {
       end
     end
   end
+
+=end ruby
+
+=cut
+
+
+
+=begin ruby
 
   # The String name of this experiment. Default is "experiment". See
   # Scientist::Default for an example of how to override this default.
